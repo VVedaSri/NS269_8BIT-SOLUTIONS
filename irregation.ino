@@ -77,7 +77,7 @@ void loop()
   hours= c*24;  
    
   while(hours >0){
-   //humidity= dht.readHumidity();
+    humidity= dht.readHumidity();
     Serial.print("stage:");
     Serial.println(i);
     Serial.println(hours);
