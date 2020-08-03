@@ -74,33 +74,18 @@ void loop()
   int high_level[] ={2,5,0,5,5,5,0}; 
   // put your main code here, to run repeatedly:
   c = days[i];
-  //hours= c*24;  
-  hours=3;  
-  
-//  char pump_on[200] = "pump on";
-//  char pump_off[200] = "pump off";
- // char motor_on[200] = "motor on";
- // char motor_off[200] = "motor off";
-  //char irri[200] = "irrigation";
-  //char stop_irri[200] = "stop irrigation";
-  waterlevel= 1;
-  humidity=50;
-  temp=30;
+  hours= c*24;  
+   
   while(hours >0){
    //humidity= dht.readHumidity();
     Serial.print("stage:");
     Serial.println(i);
     Serial.println(hours);
-    
-   //waterlevel= water_level();
-
-   
-   //temp= temperature();
-
-   
-   Serial.println(humidity);
-   Serial.println(waterlevel);
-   Serial.println(temp);
+    waterlevel= water_level();
+    temp= temperature();
+    Serial.println(humidity);
+    Serial.println(waterlevel);
+    Serial.println(temp);
     if (humidity> 80){
       Serial.println("high humidity");
      
@@ -111,16 +96,15 @@ void loop()
     }
     
     if (i==2 || i==6){
-      //int soil_moisture = analogRead(A0);
-      soil_moisture = 20;
-      
+      int soil_moisture = analogRead(A0);
+         
       if (soil_moisture< 30){
         Serial.print("irrigation");
        
   
         while(soil_moisture < 50){
-          //soil_moisture = analogRead(A0);
-          delay(1000);
+          soil_moisture = analogRead(A0);
+          
           soil_moisture = 50;
         } 
         Serial.print("stop irrigation");   
@@ -136,9 +120,8 @@ void loop()
         Serial.print("pump on");
         while(waterlevel >0){
           relayModule.on(); 
-          //waterlevel= water_level();
-          delay(1000);
-          water_level=0;                // pump on 
+          waterlevel= water_level();
+                         // pump on 
         } 
         Serial.print("pump off");
         relayModule.off();                  // pump off
@@ -155,7 +138,7 @@ void loop()
         
         while(waterlevel>low_level[i]){
           waterlevel= water_level();
-          relayModule.on();              //to switvh on the pump
+          relayModule.on();              //to switch on the pump
         } 
         Serial.print("pump off");
         relayModule.off();              // switch off the pump
@@ -170,8 +153,7 @@ void loop()
         while(waterlevel < high_level[i]){
           waterlevel= water_level();
           relayModule.on();             // motor on
-          delay(2000);
-          waterlevel=5;
+          
         } 
         
         Serial.print("motor off"); 
@@ -186,8 +168,7 @@ void loop()
     if (temp< low_temp[i]){
       Serial.print("low temp");
     }
-    //delay(3600000);
-    //delay(2000);
+ 
   ThingSpeak.setField(1,soil_moisture);
   ThingSpeak.setField(2,humidity);
   ThingSpeak.setField(3,temp);
@@ -196,10 +177,13 @@ void loop()
   ThingSpeak.writeFields(channelid,myWriteAPIKey);
   ThingSpeak.writeFields(channelid,myWriteAPIKey);
   ThingSpeak.writeFields(channelid,myWriteAPIKey);
-  delay(2000);
+  delay(3600000);
     hours = hours -1;
   }
   i=i+1; 
+  if(i==7){
+    break;
+  }
 
 }
 int water_level(){
