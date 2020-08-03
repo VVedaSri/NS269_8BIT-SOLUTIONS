@@ -31,11 +31,11 @@ int humidity;
 WiFiClient client;
 void callback(char* topic, byte* payload, unsigned int payloadLength);
 // CHANGE TO YOUR WIFI CREDENTIALS
-const char* ssid = "NETGEAR0406";
-const char* password = "sirijayani";
+const char* ssid = "**********";
+const char* password = "***********";
 // CHANGE TO YOUR DEVICE CREDENTIALS AS PER IN Things Speak
-unsigned long channelid=982031;
-const char* myWriteAPIKey="YGEJQ6GA1EGGG89Z";
+unsigned long channelid=********;
+const char* myWriteAPIKey="**********";
 
 void setup()
 {
